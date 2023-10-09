@@ -19,5 +19,10 @@ defmodule Iuliia do
     Iuliia.Engine.translate(string, schema_name)
   end
 
+  @spec translate(String.t(), map()) :: String.t()
+  def translate(string, schema) when is_map(schema) do
+    Iuliia.Engine.translate(string, schema)
+  end
+
   def translate(non_string, _), do: non_string
 end

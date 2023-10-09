@@ -15,6 +15,20 @@ defmodule IuliiaTest do
         end
       end
     end
+
+    test "translates samples for preloaded schema" do
+      for schema_path <- Path.wildcard("lib/schemas/*.json") do
+        schema = schema_path |> File.read!() |> Jason.decode!()
+
+        schema_name = schema["name"]
+        IO.puts(schema_name)
+
+        for sample <- schema["samples"] do
+          schema = Iuliia.Schema.lookup(schema_name)
+          assert Iuliia.Engine.translate(Enum.at(sample, 0), schema) == Enum.at(sample, 1)
+        end
+      end
+    end
   end
 
   describe ".lookup" do
