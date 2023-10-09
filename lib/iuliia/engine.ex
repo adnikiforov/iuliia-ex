@@ -12,9 +12,14 @@ defmodule Iuliia.Engine do
       "Yuliya, syesh' eshche etikh myagkikh frantsuzskikh bulok iz Yoshkar-Oly, da vypey altayskogo chayu"
   """
   @spec translate(String.t(), String.t()) :: String.t()
-  def translate(string, schema_name) do
+  def translate(string, schema_name) when is_binary(schema_name) do
     schema = Iuliia.Schema.lookup(schema_name)
 
+    translate(string, schema)
+  end
+
+  @spec translate(String.t(), map()) :: String.t()
+  def translate(string, schema) when is_map(schema) do
     translated_chunks =
       for word <- String.split(string, ~r/\b/u, trim: true), do: translit_chunk(schema, word)
 
